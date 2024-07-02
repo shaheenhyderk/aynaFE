@@ -5,13 +5,14 @@ const theme = createTheme({
   palette: {
     mode: 'dark', // Enable dark mode
     primary: {
-      main: '#90caf9', // Custom primary color
+      main: '#ffffff', // Custom primary color
     },
     secondary: {
       main: '#f48fb1', // Custom secondary color
     },
   },
   components: {
+    
     MuiOutlinedInput: {
       styleOverrides: {
         root: {

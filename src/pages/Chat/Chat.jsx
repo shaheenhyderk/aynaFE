@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Container,
     CssBaseline,
@@ -23,8 +23,8 @@ import {
     Avatar,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useNavigate } from 'react-router-dom';
-import { listRooms, listMessages, createRoom, connectToRoom } from "../../api/chat";
+import {useNavigate} from 'react-router-dom';
+import {listRooms, listMessages, createRoom, connectToRoom} from "../../api/chat";
 
 export default function ChatPage() {
     const [selectedRoom, setSelectedRoom] = useState(null);
@@ -84,7 +84,7 @@ export default function ChatPage() {
             setChatRooms([...chatRooms, newRoom.data]);
             setNewRoomName('');
             setCreateRoomOpen(false);
-            setSelectedRoom(newRoom.data);
+            handleRoomSelect(newRoom.data);
         }
     };
 
@@ -115,12 +115,28 @@ export default function ChatPage() {
     };
 
     const drawer = (
-        <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-            <Typography variant="h6" sx={{ p: 2 }}>
-                Chat Rooms
-            </Typography>
-            <Divider />
-            <List sx={{ flexGrow: 1 }}>
+        <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
+            backgroundImage: 'linearGradient(#0A0908, rgba(255, 255, 255, 0.15))'
+        }}>
+            <Box sx={{display: 'flex', alignItems: 'center', flexDirection: 'column', p: 2}}>
+                <Box sx={{display: 'flex', alignItems: 'center', width: '100%'}}>
+                    <Avatar alt="Logo" src="https://getayna.com/images/icon.svg"/>
+                    <Box sx={{ml: 2}}>
+                        <Typography variant="h6">
+                            Chat Rooms
+                        </Typography>
+                        <Typography variant="caption" sx={{color: 'grey.500'}}>
+                            {username} {/* Assuming 'username' is accessible here */}
+                        </Typography>
+                    </Box>
+                </Box>
+            </Box>
+
+            <Divider/>
+            <List sx={{flexGrow: 1}}>
                 {chatRooms && chatRooms.map((room) => (
                     <ListItem
                         button
@@ -128,16 +144,17 @@ export default function ChatPage() {
                         selected={selectedRoom && selectedRoom.id === room.id}
                         onClick={() => handleRoomSelect(room)}
                     >
-                        <ListItemText primary={room.attributes.name} />
+                        <ListItemText primary={room.attributes.name}/>
                     </ListItem>
                 ))}
             </List>
-            <Divider />
-            <Box sx={{ p: 2 }}>
+            <Divider/>
+            <Box sx={{p: 2}}>
                 <Button
                     variant="contained"
                     fullWidth
                     color="primary"
+                    sx={{borderRadius: 3}}
                     onClick={() => setCreateRoomOpen(true)}
                 >
                     Create Room
@@ -145,19 +162,20 @@ export default function ChatPage() {
                 <Button
                     variant="contained"
                     fullWidth
-                    color="secondary"
-                    sx={{ mt: 2 }}
+                    sx={{mt: 2, backgroundColor: '#F06543', '&:hover': {backgroundColor: 'darkred'}, borderRadius: 3}}
                     onClick={handleLogout}
                 >
                     Logout
                 </Button>
             </Box>
         </Box>
+
+
     );
 
     return (
         <Container component="main" maxWidth="lg">
-            <CssBaseline />
+            <CssBaseline/>
             <Box
                 sx={{
                     display: 'flex',
@@ -175,16 +193,16 @@ export default function ChatPage() {
                                 aria-label="open drawer"
                                 edge="start"
                                 onClick={handleDrawerToggle}
-                                sx={{ mr: 2 }}
+                                sx={{mr: 2}}
                             >
-                                <MenuIcon />
+                                <MenuIcon/>
                             </IconButton>
                             <Typography variant="h6" noWrap component="div">
                                 Chat Rooms
                             </Typography>
-                            <Avatar alt="Logo" src="https://getayna.com/images/icon.svg" sx={{ ml: 'auto' }} />
+                            <Avatar alt="Logo" src="https://getayna.com/images/icon.svg" sx={{ml: 'auto'}}/>
                             {username && (
-                                <Typography variant="body1" sx={{ ml: 2 }}>
+                                <Typography variant="body1" sx={{ml: 2}}>
                                     {username}
                                 </Typography>
                             )}
@@ -192,7 +210,7 @@ export default function ChatPage() {
                     </AppBar>
                 )}
 
-                <Box sx={{ display: 'flex', flexGrow: 1 }}>
+                <Box sx={{display: 'flex', flexGrow: 1}}>
                     {!isMobile && (
                         <Box
                             sx={{
@@ -229,10 +247,10 @@ export default function ChatPage() {
                                     key={chat.id}
                                     sx={{
                                         alignSelf: chat.sender_type === 'USER' ? 'flex-end' : 'flex-start',
-                                        bgcolor: chat.sender_type === 'USER' ? 'primary.main' : 'grey.700',
-                                        color: 'white',
+                                        bgcolor: chat.sender_type === 'USER' ? '#E0DFD5' : '#F09D51',
+                                        color: '#000000',
                                         p: 1,
-                                        borderRadius: 1,
+                                        borderRadius: 3,
                                         maxWidth: '60%',
                                         mb: 1,
                                     }}
@@ -256,12 +274,18 @@ export default function ChatPage() {
                                     placeholder="Type a message"
                                     value={message}
                                     onChange={(e) => setMessage(e.target.value)}
-                                    sx={{ mr: 2 }}
+                                    onKeyPress={(e) => {
+                                        if (e.key === 'Enter') {
+                                            handleSendMessage();
+                                        }
+                                    }}
+                                    sx={{mr: 2}}
                                 />
                                 <Button
                                     variant="contained"
                                     color="primary"
                                     onClick={() => handleSendMessage()}
+                                    sx={{borderRadius: 3}}
                                 >
                                     Send
                                 </Button>

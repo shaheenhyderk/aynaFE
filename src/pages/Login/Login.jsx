@@ -52,9 +52,7 @@ export default function LoginPage() {
                     alignItems: 'center',
                 }}
             >
-                <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
-                    <LockOutlinedIcon/>
-                </Avatar>
+                <Avatar alt="Logo" src="https://getayna.com/images/icon.svg"/>
                 <Typography component="h1" variant="h5">
                     Sign in
                 </Typography>
@@ -95,7 +93,7 @@ export default function LoginPage() {
                         fullWidth
                         variant="contained"
                         color="primary"
-                        sx={{mt: 3, mb: 2}}
+                        sx={{mt: 3, mb: 2, borderRadius: 3}}
                     >
                         Sign In
                     </Button>
